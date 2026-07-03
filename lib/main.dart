@@ -1,3 +1,6 @@
+//Usuario: Multiplataforma
+//Contraseña: 12345
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,10 +19,158 @@ class NetgramApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xfff4f6fb),
         useMaterial3: true,
       ),
-      home: const NetgramHome(),
+      home: const LoginScreen(),
     );
   }
 }
+
+// =======================
+// PANTALLA DE LOGIN
+// =======================
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController usuarioController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  void iniciarSesion() {
+    String usuario = usuarioController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (usuario == 'Multiplataforma' && password == '12345') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const NetgramHome()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Usuario o contraseña incorrectos'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    usuarioController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xfff4f6fb),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const NetgramBigLogo(),
+
+                const SizedBox(height: 18),
+
+                const Text(
+                  'Bienvenido a Netgram',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xff20283f),
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 6),
+
+                const Text(
+                  'Inicia sesión para continuar',
+                  style: TextStyle(color: Colors.grey, fontSize: 15),
+                ),
+
+                const SizedBox(height: 28),
+
+                TextField(
+                  controller: usuarioController,
+                  decoration: InputDecoration(
+                    labelText: 'Usuario',
+                    prefixIcon: const Icon(Icons.person_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Contraseña',
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: iniciarSesion,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff4767d8),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: const Text(
+                      'Iniciar sesión',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// =======================
+// PANTALLA PRINCIPAL
+// =======================
 
 class NetgramHome extends StatelessWidget {
   const NetgramHome({super.key});
